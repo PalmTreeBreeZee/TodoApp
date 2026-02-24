@@ -1,0 +1,27 @@
+# Visual Studio cache (NEVER commit this)
+.vs/
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VSCode (if you ever use them)
+.idea/
+.vscode/
+
+# NuGet
+*.nupkg
+packages/
+
+# Logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db

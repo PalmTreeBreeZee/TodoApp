@@ -64,25 +64,27 @@ namespace TodoApp.Services
 
         public async Task<TodoEntity?> UpdateTodoAsync(int id, TodoEntity updatedTodo)
         {
-            TodoEntity? result = await _repository.UpdateAsync(id, updatedTodo);
+            TodoEntity? result = await _repository.UpdateAsync(id, updatedTodo, _context);
 
             await _context.SaveChangesAsync();
 
             return result;
         }
 
-        public async Task<int> DeleteTodoAsync(int id)
+        public async Task<int> DeleteTodoAsync()
         {
-            int result = await _repository.DeleteAsync(id);
+            TodoContext context = _contextFactory.CreateDbContext();
 
-            await _context.SaveChangesAsync();
+            int result = await _repository.DeleteAsync(context);
+
+            await context.SaveChangesAsync();
 
             return result;
         }
 
         public async Task<TodoEntity> CreateTodoAsync(TodoEntity todo)
         {
-            TodoEntity result = await _repository.CreateAsync(todo);
+            TodoEntity result = await _repository.CreateAsync(todo, _context);
 
             await _context.SaveChangesAsync();
 

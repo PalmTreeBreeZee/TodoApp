@@ -37,23 +37,30 @@ namespace TodoApp.Repositories
             return todo;
         }
 
-        public async Task<TodoEntity?> UpdateAsync(int id, TodoEntity updatedTodo)
+        public async Task<TodoEntity?> UpdateAsync(int id, TodoEntity updatedTodo, TodoContext? context = null)
         {
             TodoEntity? existingTodo = await _context.Todos.FindAsync(id);
             if (existingTodo == null)
             {
                 return null;
             }
-            existingTodo.Notes = updatedTodo.Notes;
+            if (context != null)
+            {
+                existingTodo.Notes = updatedTodo.Notes;
+                existingTodo.Checked = updatedTodo.Checked;
+                context.Todos.Update(existingTodo);
+            }
 
             return existingTodo;
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(TodoContext context)
         {
-            int result = await _context.Todos.Where(t => t.Id == id).ExecuteDeleteAsync();
+            List<TodoEntity> todos = await context.Todos.Where(t => t.Checked == true).ToListAsync();
 
-            return result;
+            context.RemoveRange(todos);
+
+            return todos.Count;
         }
     }
 }

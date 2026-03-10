@@ -74,10 +74,10 @@ namespace TodoApp.Controllers
         }
 
         [HttpDelete]
-        [Route("api/Todo/{id}")]
-        public int Delete(int id) 
+        [Route("api/Todo/")]
+        public int Delete() 
         {
-            Task<int> result = _service.DeleteTodoAsync(id);
+            Task<int> result = _service.DeleteTodoAsync();
 
             return result.Result;
         }

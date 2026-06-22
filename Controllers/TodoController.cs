@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TodoApp.Context;
 using TodoApp.Entities;
+using TodoApp.Parameters;
 using TodoApp.Services;
 
 namespace TodoApp.Controllers
@@ -18,9 +19,14 @@ namespace TodoApp.Controllers
 
         [HttpGet]
         [Route("api/Todo")]
-        public List<TodoEntity> Get()
+        public TodoResult<TodoEntity> Get(Pagination? pagination)
         {
-            Task<List<TodoEntity>> result = _service.GetAllTodosAsync();
+            if (pagination == null)
+            {
+                pagination = new Pagination();
+            }
+
+            Task<TodoResult<TodoEntity>> result = _service.GetAllTodosAsync(pagination);
 
             return result.Result;
         }

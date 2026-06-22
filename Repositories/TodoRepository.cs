@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoApp.Context;
 using TodoApp.Entities;
+using TodoApp.Parameters;
 
 namespace TodoApp.Repositories
 {
@@ -13,9 +14,16 @@ namespace TodoApp.Repositories
             _context = contextFactory.CreateDbContext();
         }
 
-        public async Task<List<TodoEntity>> GetAllAsync()
+        public async Task<TodoResult<TodoEntity>> GetAllAsync(Pagination pagination)
         {
-            return await _context.Todos.ToListAsync();
+            List<TodoEntity> todos = await _context.Todos.Where(t => t.Id > pagination.Id).Take(pagination.Limit).ToListAsync();
+
+            return new TodoResult<TodoEntity>
+            {
+                LastId = todos.LastOrDefault()?.Id ?? 0,
+                IsSuccess = true,
+                Data = todos
+            };
         }
 
         public async Task<TodoEntity?> GetByIdAsync(int id)

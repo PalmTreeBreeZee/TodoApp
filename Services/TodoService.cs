@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoApp.Context;
 using TodoApp.Entities;
+using TodoApp.Parameters;
 using TodoApp.Repositories;
 
 namespace TodoApp.Services
@@ -48,9 +49,9 @@ namespace TodoApp.Services
             return createdTodos;
         }
 
-        public async Task<List<TodoEntity>> GetAllTodosAsync()
+        public async Task<TodoResult<TodoEntity>> GetAllTodosAsync(Pagination pagination)
         {
-            List<TodoEntity> result = await _repository.GetAllAsync();
+            TodoResult<TodoEntity> result = await _repository.GetAllAsync(pagination);
 
             return result;
         }
